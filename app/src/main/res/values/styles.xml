@@ -1,0 +1,22 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="android:Theme.Material.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:title">Ring新闻</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!--<item name="android:windowTranslucentStatus">true</item>-->
+    </style>
+
+    <style name="AppTheme.PopOverlay" parent="Base.ThemeOverlay.AppCompat.Light">
+
+    </style>
+<style name="AppTheme.AppbarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+
+
+
+</resources>
