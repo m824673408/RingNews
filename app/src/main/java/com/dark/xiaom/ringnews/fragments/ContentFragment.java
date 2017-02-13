@@ -3,9 +3,11 @@ package com.dark.xiaom.ringnews.fragments;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.dark.xiaom.ringnews.pagers.BasePager;
+import com.dark.xiaom.ringnews.pagers.NewsPager;
 import com.dark.xiaom.ringnews.utils.JsonDetail;
 
 import java.util.List;
@@ -23,7 +25,8 @@ public class ContentFragment extends BaseFragment {
 
     @Override
     public View initView() {
-        view  = new BasePager(activity).initView();
+
+        view  = new NewsPager(activity).initView();
         return view;
     }
 

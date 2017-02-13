@@ -14,12 +14,13 @@
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/actionBarSize"
     android:background="@color/colorPrimary"
+    android:elevation="4dp"
     >
 
 
     <TextView
         android:id="@+id/tv_toolbar"
-        android:textSize="20sp"
+        android:textSize="34sp"
         android:textColor="@color/cardview_light_background"
         android:layout_gravity="center_horizontal"
         android:singleLine="true"
@@ -33,11 +34,19 @@
 </android.support.v7.widget.Toolbar>
 
 
-    <include layout="@layout/layout_news_viewpager"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
+    <!--<include layout="@layout/layout_news_viewpager"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_weight="1"-->
+        <!--/>-->
+
+    <FrameLayout
+        android:id="@+id/fl_news_content"
         android:layout_weight="1"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </FrameLayout>
 
 
 
