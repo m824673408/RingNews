@@ -2,8 +2,10 @@ package com.dark.xiaom.ringnews.pagers;
 
 import android.app.Activity;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -29,6 +31,7 @@ public class NewsPager extends BasePager {
     private ViewPager viewPager;
     private List<MenuPager> mPagerList;
     private ImageButton imageButton;
+
     public NewsPager(Activity activity) {
         super(activity);
 
@@ -46,6 +49,7 @@ public class NewsPager extends BasePager {
         tabPageIndicator.setViewPager(viewPager);
         return view;
     }
+
 
     private class MyPagerAdapter extends PagerAdapter {
         @Override
@@ -109,4 +113,6 @@ public class NewsPager extends BasePager {
             }
         });
     }
+
+
 }

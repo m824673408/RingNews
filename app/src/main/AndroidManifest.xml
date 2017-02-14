@@ -19,6 +19,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.BaseActivity"></activity>
+
+        <activity
+            android:name=".activities.DetailActivity"
+            android:launchMode="singleTask"></activity>
     </application>
 
 </manifest>

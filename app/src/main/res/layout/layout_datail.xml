@@ -5,18 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <!--<TextView-->
-        <!--android:text="13132"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="80dp" />-->
-
     <com.daimajia.numberprogressbar.NumberProgressBar
         android:id="@+id/npb"
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:layout_centerVertical="true"
-        app:progress_reached_color="@color/colorAccent"
+        app:progress_reached_color="@color/colorPrimary"
         app:progress_text_visibility="invisible"
         android:background="#ffffff"
         />

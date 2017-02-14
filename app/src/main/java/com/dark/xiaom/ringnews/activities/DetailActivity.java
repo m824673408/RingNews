@@ -1,12 +1,14 @@
 package com.dark.xiaom.ringnews.activities;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.dark.xiaom.ringnews.R;
@@ -27,7 +29,9 @@ public class DetailActivity extends BaseActivity {
         initData();
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimary));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimary));
+        }
 
     }
 
@@ -41,7 +45,7 @@ public class DetailActivity extends BaseActivity {
         Intent intent = getIntent();
         webView.loadUrl(intent.getStringExtra("url"));
         webView.setWebChromeClient(checkWebClient());
-
+        webView.setWebViewClient(new WebViewClient());
 
     }
 
@@ -52,6 +56,8 @@ public class DetailActivity extends BaseActivity {
                 public void onProgressChanged(WebView view, int newProgress) {
                     numberProgressBar.setProgress(newProgress);
                 }
+
+
             };
             return webChromeClient;
         }
