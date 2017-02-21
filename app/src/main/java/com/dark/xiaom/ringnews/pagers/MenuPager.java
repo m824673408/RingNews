@@ -104,13 +104,15 @@ public class MenuPager extends BasePager implements SwipeRefreshLayout.OnRefresh
                 final JsonDetail.result r = jsonDetail.getResult();
                 myAdapter = new MyAdapter();
                 r.getData().remove(0);
+                final String headerUrl = r.getData().get(0).getUrl();
+                Log.d("intent", r.getData().get(0).getUrl());
                 View header = LayoutInflater.from(mActivity).inflate(R.layout.layout_headerview, recyclerView, false);
                 header.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(mActivity, DetailActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.putExtra("url", r.getData().get(0).getUrl());
+                        intent.putExtra("url", headerUrl);
                         MyApplication.getContext().startActivity(intent);
                     }
                 });

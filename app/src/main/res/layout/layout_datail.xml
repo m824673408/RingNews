@@ -1,27 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.daimajia.numberprogressbar.NumberProgressBar
-        android:id="@+id/npb"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:layout_centerVertical="true"
-        app:progress_reached_color="@color/colorPrimary"
-        app:progress_text_visibility="invisible"
-        android:background="#ffffff"
-        />
+ <WebView
+     android:id="@+id/wb_news"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"></WebView>
 
 
-
-    <WebView
-        android:id="@+id/wb_news"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </WebView>
+ <com.github.rahatarmanahmed.cpv.CircularProgressView
+     android:id="@+id/cpv"
+     android:layout_width="40dp"
+     android:layout_height="40dp"
+     android:layout_centerInParent="true"
+     app:cpv_color="@color/colorPrimary"
+     app:cpv_indeterminate="true"
+     app:cpv_animAutostart="true" />
 
 
 

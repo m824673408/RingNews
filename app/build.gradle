@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.dark.xiaom.ringnews"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -38,4 +38,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.daimajia.numberprogressbar:library:1.2@aar'
     compile project(':viewpagerindicator')
+    compile 'com.github.rahatarmanahmed:circularprogressview:2.5.0'
 }
