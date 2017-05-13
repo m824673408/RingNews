@@ -52,7 +52,7 @@ public class MainActivity extends BaseActivity {
 
     private void initView() {
         rb_explore = (RadioButton) findViewById(R.id.rbtn_explore);
-        rb_collection = (RadioButton) findViewById(R.id.rbtn_collection);
+//        rb_collection = (RadioButton) findViewById(R.id.rbtn_collection);
         rb_setting = (RadioButton) findViewById(R.id.rbtn_setting);
         rb_explore.setChecked(true);
         initNewsPager();

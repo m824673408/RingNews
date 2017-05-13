@@ -72,17 +72,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <RadioButton
-            android:id="@+id/rbtn_collection"
-            android:text="组图"
-            android:layout_weight="1"
-            android:textColor="@color/textview"
-            android:drawableTop="@drawable/icon_collection"
-            android:button="@null"
-            android:alpha="87"
-            android:textAlignment="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
         <RadioButton
             android:id="@+id/rbtn_setting"

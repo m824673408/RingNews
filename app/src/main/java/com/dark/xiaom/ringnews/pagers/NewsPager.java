@@ -15,7 +15,11 @@ import android.widget.ImageButton;
 
 import com.dark.xiaom.ringnews.R;
 import com.dark.xiaom.ringnews.utils.GlobalContants;
+import com.dark.xiaom.ringnews.utils.NoScrollViewPager;
 import com.dark.xiaom.viewpagerindicator.TabPageIndicator;
+import com.wangjie.shadowviewhelper.ShadowProperty;
+import com.wangjie.shadowviewhelper.ShadowViewDrawable;
+import com.wangjie.shadowviewhelper.ShadowViewHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +32,7 @@ public class NewsPager extends BasePager {
     private List<String> titleList;
     private final int REFRESH_UI = 0;
     private TabPageIndicator tabPageIndicator;
-    private ViewPager viewPager;
+    private NoScrollViewPager noScrollViewPager;
     private List<MenuPager> mPagerList;
     private ImageButton imageButton;
 
@@ -43,10 +47,17 @@ public class NewsPager extends BasePager {
         tabPageIndicator = (TabPageIndicator) view.findViewById(R.id.vpi);
         imageButton = (ImageButton) view.findViewById(R.id.img_btn);
         tabPageIndicator.setTypeFace(Typeface.createFromAsset(mActivity.getAssets(), "fonts/micro.ttf"));
-        viewPager = (ViewPager) view.findViewById(R.id.vp_news_list);
+        ShadowProperty sp = new ShadowProperty();
+        ShadowViewHelper.bindShadowHelper(
+                sp
+                        .setShadowColor(0x77212121)
+                        .setShadowDy(0)
+                        .setShadowRadius(1)
+                , view.findViewById(R.id.lay_line));
+        noScrollViewPager = (NoScrollViewPager) view.findViewById(R.id.vp_news_list);
         initData();
-        viewPager.setAdapter(new MyPagerAdapter());
-        tabPageIndicator.setViewPager(viewPager);
+        noScrollViewPager.setAdapter(new MyPagerAdapter());
+        tabPageIndicator.setViewPager(noScrollViewPager, 0);
         return view;
     }
 
@@ -108,8 +119,8 @@ public class NewsPager extends BasePager {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int position = viewPager.getCurrentItem();
-                viewPager.setCurrentItem(++position);
+                int position = noScrollViewPager.getCurrentItem();
+                noScrollViewPager.setCurrentItem(++position, false);
             }
         });
     }

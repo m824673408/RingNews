@@ -3,6 +3,8 @@ package com.dark.xiaom.ringnews.pagers;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,14 +12,22 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
+import com.dark.xiaom.ringnews.MyApplication;
+import com.dark.xiaom.ringnews.R;
+import com.dark.xiaom.ringnews.utils.DensityUtil;
+
 /**
  * Created by xiaom on 2017/2/12.
  */
 
 public class MyItemDecoration extends RecyclerView.ItemDecoration {
 
+    int space;
+    private Paint mPaint;
+    //注释部分为1.0版本分割线代码
     private static final int[] ATTRS = new int[]{
             android.R.attr.listDivider
+
     };
 
     public static final int HORIZONTAL_LIST = LinearLayoutManager.HORIZONTAL;
@@ -30,10 +40,13 @@ public class MyItemDecoration extends RecyclerView.ItemDecoration {
 
     public MyItemDecoration(Context context, int orientation) {
         final TypedArray a = context.obtainStyledAttributes(ATTRS);
+        space = DensityUtil.dip2px(MyApplication.getContext(), 2);
         mDivider = a.getDrawable(0);
         a.recycle();
         setOrientation(orientation);
+
     }
+
 
     public void setOrientation(int orientation) {
         if (orientation != HORIZONTAL_LIST && orientation != VERTICAL_LIST) {
@@ -45,7 +58,6 @@ public class MyItemDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void onDraw(Canvas c, RecyclerView parent) {
 //        Log.v("recyclerview-itemdecoration", "onDraw()");
-
         if (mOrientation == VERTICAL_LIST) {
             drawVertical(c, parent);
         } else {
@@ -68,6 +80,9 @@ public class MyItemDecoration extends RecyclerView.ItemDecoration {
             final int top = child.getBottom() + params.bottomMargin;
             final int bottom = top + mDivider.getIntrinsicHeight();
             mDivider.setBounds(left, top, right, bottom);
+            if (mPaint != null) {
+                c.drawRect(left, top, right, bottom, mPaint);
+            }
             mDivider.draw(c);
         }
     }
@@ -88,12 +103,28 @@ public class MyItemDecoration extends RecyclerView.ItemDecoration {
         }
     }
 
+//    @Override
+//    public void getItemOffsets(Rect outRect, int itemPosition, RecyclerView parent) {
+//        if (mOrientation == VERTICAL_LIST) {
+//            outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
+//        } else {
+//            outRect.set(0, 0, mDivider.getIntrinsicWidth(), 0);
+//        }
+//
+//
+//    }
+
     @Override
-    public void getItemOffsets(Rect outRect, int itemPosition, RecyclerView parent) {
-        if (mOrientation == VERTICAL_LIST) {
-            outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
-        } else {
-            outRect.set(0, 0, mDivider.getIntrinsicWidth(), 0);
-        }
+    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+//        outRect.left = space;
+//        outRect.right = space;
+        outRect.bottom = space;
+
+        // Add top margin only for the first item to avoid double space between items
+//        if (parent.getChildLayoutPosition(view) == 0) {
+//            outRect.top = space;
+//        } else {
+//            outRect.top = 0;
+//        }
     }
 }

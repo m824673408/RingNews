@@ -11,6 +11,7 @@
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowEnterTransition">@transition/explode</item>
         <item name="android:windowExitTransition">@transition/explode</item>
+        <item name="android:listDivider">@drawable/divider_bg</item>
         <!--<item name="android:windowTranslucentStatus">true</item>-->
     </style>
 
@@ -19,7 +20,7 @@
     </style>
 <style name="AppTheme.AppbarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <style name="Widget.TabPageIndicator" parent="AppTheme">
+    <style name="Widget.TabPageIndicator" parent="android:Theme.Material.Light.DarkActionBar">
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/vpi__tab_indicator</item>
         <item name="android:paddingLeft">20dip</item>
@@ -30,6 +31,7 @@
         <!--<item name="android:textColor">@color/colorPrimary</item>-->
         <item name="android:textSize">15sp</item>
         <item name="android:maxLines">1</item>
+        <item name="android:elevation">2dp</item>
     </style>
 
     <style name="TextAppearance.TabPageIndicator" parent="Widget">

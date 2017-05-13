@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <LinearLayout
+        android:id="@+id/lay_line"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -14,13 +16,12 @@
 
         <com.dark.xiaom.viewpagerindicator.TabPageIndicator
             android:id="@+id/vpi"
-            android:theme="@style/Widget.TabPageIndicator"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="38dp"
             android:layout_weight="1"
-            android:elevation="2dp">
+            android:layout_gravity="center_horizontal"
+            android:theme="@style/Widget.TabPageIndicator" />
 
-        </com.dark.xiaom.viewpagerindicator.TabPageIndicator>
 
         <ImageButton
             android:id="@+id/img_btn"
@@ -30,16 +31,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+
     </LinearLayout>
 
 
-    <android.support.v4.view.ViewPager
+    <com.dark.xiaom.ringnews.utils.NoScrollViewPager
     android:id="@+id/vp_news_list"
     android:layout_weight="1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-</android.support.v4.view.ViewPager>
+    </com.dark.xiaom.ringnews.utils.NoScrollViewPager>
 
 
 

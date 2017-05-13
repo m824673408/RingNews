@@ -12,11 +12,15 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.dark.xiaom.ringnews.R;
+import com.dark.xiaom.ringnews.utils.ADFilterTool;
+import com.dark.xiaom.ringnews.utils.NoAdWebViewClient;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
 
 /**
@@ -26,7 +30,7 @@ public class DetailActivity extends BaseActivity {
     private static final String APP_CACAHE_DIRNAME = "/webcache";
     private WebView webView;
     private WebChromeClient webChromeClient;
-    private WebViewClient webViewClient;
+    private NoAdWebViewClient webViewClient;
     private CircularProgressView circularProgressView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,11 +56,13 @@ public class DetailActivity extends BaseActivity {
 
     private void initData() {
         Intent intent = getIntent();
+        String url = intent.getStringExtra("url");
+        Log.d("加密后url", url);
         webView.loadUrl(intent.getStringExtra("url"));
         webView.getSettings().setBlockNetworkImage(true);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebChromeClient(checkWebClient());
-        webView.setWebViewClient(checkWebviewClient());
+        webView.setWebViewClient(checkWebviewClient(url));
         webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);  //设置 缓存模式
         // 开启 DOM storage API 功能
         webView.getSettings().setDomStorageEnabled(true);
@@ -90,9 +96,9 @@ public class DetailActivity extends BaseActivity {
         }
     }
 
-    private WebViewClient checkWebviewClient() {
+    private WebViewClient checkWebviewClient(String url) {
         if (webViewClient == null) {
-            webViewClient = new WebViewClient() {
+            webViewClient = new NoAdWebViewClient(this, url) {
 
                 @Override
                 public void onPageFinished(WebView view, String url) {
@@ -103,6 +109,16 @@ public class DetailActivity extends BaseActivity {
                 @Override
                 public void onPageStarted(WebView view, String url, Bitmap favicon) {
 
+                }
+
+                @Override
+                public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest url) {
+                    String flipUrl = url.getUrl().toString().toLowerCase();
+                    if (!ADFilterTool.hasAd(DetailActivity.this, flipUrl)) {
+                        return super.shouldInterceptRequest(view, url);//正常加载
+                    } else {
+                        return new WebResourceResponse(null, null, null);//含有广告资源屏蔽请求
+                    }
                 }
             };
             return webViewClient;

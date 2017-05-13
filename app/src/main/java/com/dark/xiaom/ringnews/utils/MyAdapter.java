@@ -61,6 +61,7 @@ public class MyAdapter extends RecyclerView.Adapter implements View.OnClickListe
         view.setOnClickListener(this);
 
         return new ViewHolder(view);
+
     }
 
     @Override
