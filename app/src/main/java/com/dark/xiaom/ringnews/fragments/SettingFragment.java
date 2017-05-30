@@ -6,6 +6,7 @@ import com.dark.xiaom.ringnews.pagers.SettingContentPager;
 
 /**
  * Created by xiaom on 2017/3/1.
+ * 设置碎片
  */
 
 public class SettingFragment extends BaseFragment {

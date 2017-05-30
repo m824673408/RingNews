@@ -1,19 +1,13 @@
 package com.dark.xiaom.ringnews.fragments;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
-import com.dark.xiaom.ringnews.pagers.BasePager;
 import com.dark.xiaom.ringnews.pagers.NewsPager;
-import com.dark.xiaom.ringnews.utils.JsonDetail;
-
-import java.util.List;
 
 /**
  * Created by xiaom on 2017/2/10.
+ * 内容碎片
  */
 
 public class ContentFragment extends BaseFragment {

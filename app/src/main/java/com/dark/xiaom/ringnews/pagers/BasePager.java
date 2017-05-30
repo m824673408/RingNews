@@ -10,8 +10,14 @@ import android.view.View;
 public class BasePager {
     public Activity mActivity;
     public View mRootView;
-
+    public String type;
     public BasePager(Activity activity) {
+        mActivity = activity;
+        mRootView = initView();
+    }
+
+    public BasePager(Activity activity,String type) {
+        this.type = type;
         mActivity = activity;
         mRootView = initView();
     }

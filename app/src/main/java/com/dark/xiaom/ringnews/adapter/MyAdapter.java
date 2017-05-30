@@ -1,17 +1,18 @@
-package com.dark.xiaom.ringnews.utils;
+package com.dark.xiaom.ringnews.adapter;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.dark.xiaom.ringnews.R;
+import com.dark.xiaom.ringnews.domain.JiSuJson;
+import com.dark.xiaom.ringnews.domain.JsonDetail;
 
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +24,7 @@ public class MyAdapter extends RecyclerView.Adapter implements View.OnClickListe
     public static final int TYPE_HEADER = 0;
     public static final int TYPE_NORMAL = 1;
 
-    private ArrayList<JsonDetail.NewContent> mDatas = new ArrayList<>();
-
+    private ArrayList<JiSuJson.NewContent> mDatas = new ArrayList<>();
     private View mHeaderView;
     private OnRecyclerViewItemClickListener mOnItemClickListener = null;
 
@@ -64,14 +64,25 @@ public class MyAdapter extends RecyclerView.Adapter implements View.OnClickListe
 
     }
 
+
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (getItemViewType(position) == TYPE_HEADER) return;
         final int pos = getRealPosition(holder);
-        final JsonDetail.NewContent data = mDatas.get(pos);
-        ((ViewHolder) holder).authorNameText.setText(data.getAuthor_name());
+        final JiSuJson.NewContent data = mDatas.get(pos);
+        String date = data.getTime().substring(data.getTime().indexOf("-") + 1,data.getTime().length());
+        if(date == ""){
+            date =data.getTime().substring(data.getTime().indexOf(".") + 1,data.getTime().length());
+        }
+        if (date == "" || data.getSrc() == ""){
+            ((ViewHolder) holder).authorNameText.setText("待认领的火星新闻");
+        }else{
+            ((ViewHolder) holder).authorNameText.setText(data.getSrc() + " | " + date);
+        }
+
         ((ViewHolder) holder).text.setText(data.getTitle());
-        x.image().bind(((ViewHolder) holder).imageView, data.getThumbnail_pic_s(), options);
+        x.image().bind(((ViewHolder) holder).imageView, data.getPic(), options);
         //将数据保存在itemView的Tag中，以便点击时进行获取
         holder.itemView.setTag(data);
     }
@@ -81,16 +92,20 @@ public class MyAdapter extends RecyclerView.Adapter implements View.OnClickListe
         return mHeaderView == null ? position : position - 1;
     }
 
+
+
     @Override
     public int getItemCount() {
         return mHeaderView == null ? mDatas.size() : mDatas.size() + 1;
     }
 
+
+
     @Override
     public void onClick(View view) {
         if (mOnItemClickListener != null) {
             //注意这里使用getTag方法获取数据
-            mOnItemClickListener.onItemClick(view, ((JsonDetail.NewContent) view.getTag()).getUrl());
+            mOnItemClickListener.onItemClick(view, ((JiSuJson.NewContent) view.getTag()).getContent(),((JiSuJson.NewContent) view.getTag()).getTitle());
         }
     }
 
@@ -103,7 +118,7 @@ public class MyAdapter extends RecyclerView.Adapter implements View.OnClickListe
         return mHeaderView;
     }
 
-    public void addDatas(List<JsonDetail.NewContent> datas) {
+    public void addDatas(List<JiSuJson.NewContent> datas) {
         mDatas.addAll(datas);
         notifyDataSetChanged();
     }
@@ -120,7 +135,7 @@ public class MyAdapter extends RecyclerView.Adapter implements View.OnClickListe
     }
 
     public static interface OnRecyclerViewItemClickListener {
-        void onItemClick(View view, String data);
+        void onItemClick(View view, String content,String title);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -135,6 +150,23 @@ public class MyAdapter extends RecyclerView.Adapter implements View.OnClickListe
             text = (TextView) itemView.findViewById(R.id.tv_type);
             imageView = (ImageView) itemView.findViewById(R.id.iv_new);
             authorNameText = (TextView) itemView.findViewById(R.id.tv_author_name);
+        }
+    }
+
+    public boolean isVisBottom(RecyclerView recyclerView){
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        //屏幕中最后一个可见子项的position
+        int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+        //当前屏幕所看到的子项个数
+        int visibleItemCount = layoutManager.getChildCount();
+        //当前RecyclerView的所有子项个数
+        int totalItemCount = layoutManager.getItemCount();
+        //RecyclerView的滑动状态
+        int state = recyclerView.getScrollState();
+        if(visibleItemCount > 0 && lastVisibleItemPosition == totalItemCount - 1 && state == recyclerView.SCROLL_STATE_IDLE){
+            return true;
+        }else {
+            return false;
         }
     }
 }

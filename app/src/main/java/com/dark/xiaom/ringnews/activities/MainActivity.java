@@ -2,6 +2,7 @@ package com.dark.xiaom.ringnews.activities;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -16,6 +17,11 @@ import com.dark.xiaom.ringnews.pagers.NewsPager;
 
 import org.xutils.x;
 
+/**
+ * Mainactivity各种新闻列表主要陈列
+ *
+ *
+ */
 
 public class MainActivity extends BaseActivity {
     private ContentFragment fragment;
@@ -31,6 +37,11 @@ public class MainActivity extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         initView();
         initData();
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimaryDark));
+        }
     }
 
     private void initData() {

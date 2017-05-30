@@ -1,9 +1,11 @@
-package com.dark.xiaom.ringnews.utils;
+package com.dark.xiaom.ringnews.domain;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.dark.xiaom.ringnews.utils.ADFilterTool;
 
 /**
  * Created by xiaom on 2017/3/24.
@@ -30,7 +32,5 @@ public class NoAdWebViewClient extends WebViewClient {
         } else {
             return super.shouldInterceptRequest(view, url);
         }
-
-
     }
 }

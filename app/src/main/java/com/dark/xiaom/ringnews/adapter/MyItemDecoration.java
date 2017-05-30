@@ -1,4 +1,4 @@
-package com.dark.xiaom.ringnews.pagers;
+package com.dark.xiaom.ringnews.adapter;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -18,11 +18,12 @@ import com.dark.xiaom.ringnews.utils.DensityUtil;
 
 /**
  * Created by xiaom on 2017/2/12.
+ * RecyclerView装饰类
  */
 
 public class MyItemDecoration extends RecyclerView.ItemDecoration {
 
-    int space;
+
     private Paint mPaint;
     //注释部分为1.0版本分割线代码
     private static final int[] ATTRS = new int[]{
@@ -40,7 +41,7 @@ public class MyItemDecoration extends RecyclerView.ItemDecoration {
 
     public MyItemDecoration(Context context, int orientation) {
         final TypedArray a = context.obtainStyledAttributes(ATTRS);
-        space = DensityUtil.dip2px(MyApplication.getContext(), 2);
+
         mDivider = a.getDrawable(0);
         a.recycle();
         setOrientation(orientation);
@@ -103,22 +104,22 @@ public class MyItemDecoration extends RecyclerView.ItemDecoration {
         }
     }
 
-//    @Override
-//    public void getItemOffsets(Rect outRect, int itemPosition, RecyclerView parent) {
-//        if (mOrientation == VERTICAL_LIST) {
-//            outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
-//        } else {
-//            outRect.set(0, 0, mDivider.getIntrinsicWidth(), 0);
-//        }
-//
-//
-//    }
-
     @Override
-    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+    public void getItemOffsets(Rect outRect, int itemPosition, RecyclerView parent) {
+        if (mOrientation == VERTICAL_LIST) {
+            outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
+        } else {
+            outRect.set(0, 0, mDivider.getIntrinsicWidth(), 0);
+        }
+
+
+    }
+
+//    @Override
+//    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
 //        outRect.left = space;
 //        outRect.right = space;
-        outRect.bottom = space;
+//        outRect.bottom = space;
 
         // Add top margin only for the first item to avoid double space between items
 //        if (parent.getChildLayoutPosition(view) == 0) {
@@ -126,5 +127,5 @@ public class MyItemDecoration extends RecyclerView.ItemDecoration {
 //        } else {
 //            outRect.top = 0;
 //        }
-    }
+//    }
 }

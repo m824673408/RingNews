@@ -7,6 +7,10 @@ import android.support.v4.app.FragmentActivity;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+/**
+ * Activity父类
+ *
+ */
 public class BaseActivity extends FragmentActivity {
 
     @Override

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 /**
  * Created by Administrator on 2016/12/27.
+ * 碎片类父类
  */
 public abstract class BaseFragment extends Fragment {
     public static Activity activity;

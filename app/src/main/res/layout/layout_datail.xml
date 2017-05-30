@@ -1,28 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
- <WebView
-     android:id="@+id/wb_news"
+ <LinearLayout
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+<android.support.v7.widget.Toolbar
+    android:id="@+id/tb_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true"
+    android:minHeight="?android:attr/actionBarSize"
+    android:background="@color/colorPrimary"
+    android:padding="10dp"
+    >
+
+
+
+</android.support.v7.widget.Toolbar>
+
+ <RelativeLayout
+     android:fitsSystemWindows="true"
      android:layout_width="match_parent"
      android:layout_height="match_parent">
 
-
- </WebView>
-
-
- <com.github.rahatarmanahmed.cpv.CircularProgressView
-     android:id="@+id/cpv"
-     android:layout_width="40dp"
-     android:layout_height="40dp"
-     android:layout_centerInParent="true"
-     app:cpv_color="@color/colorPrimary"
-     app:cpv_indeterminate="true"
-     app:cpv_animAutostart="true" />
+  <WebView
+      android:id="@+id/wb_news"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
 
 
+  </WebView>
 
 
-</RelativeLayout>
+  <com.github.rahatarmanahmed.cpv.CircularProgressView
+      android:id="@+id/cpv"
+      android:layout_width="40dp"
+      android:layout_height="40dp"
+      android:layout_centerInParent="true"
+      app:cpv_color="@color/colorPrimary"
+      app:cpv_indeterminate="true"
+      app:cpv_animAutostart="true" />
+
+ </RelativeLayout>
+
+ </LinearLayout>
+
+
+
+
+
+

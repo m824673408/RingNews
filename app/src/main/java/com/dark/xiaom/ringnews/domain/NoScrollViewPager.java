@@ -1,4 +1,4 @@
-package com.dark.xiaom.ringnews.utils;
+package com.dark.xiaom.ringnews.domain;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;

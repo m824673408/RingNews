@@ -1,4 +1,4 @@
-package com.dark.xiaom.ringnews.utils;
+package com.dark.xiaom.ringnews.domain;
 
 /**
  * Created by com.example.com.example.newclient.activities.activities on 2016/7/12.
@@ -103,6 +103,7 @@ public class JsonDetail implements Serializable {
             this.realtype = realtype;
         }
 
+
     }
 
     public String getReason() {
@@ -127,6 +128,15 @@ public class JsonDetail implements Serializable {
 
     public void setResult(result result) {
         this.result = result;
+    }
+
+    @Override
+    public String toString() {
+        return "JsonDetail{" +
+                "reason='" + reason + '\'' +
+                ", error_code=" + error_code +
+                ", result=" + result +
+                '}';
     }
 
 

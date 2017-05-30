@@ -2,23 +2,16 @@ package com.dark.xiaom.ringnews.pagers;
 
 import android.app.Activity;
 import android.graphics.Typeface;
-import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.dark.xiaom.ringnews.R;
-import com.dark.xiaom.ringnews.utils.GlobalContants;
-import com.dark.xiaom.ringnews.utils.NoScrollViewPager;
+import com.dark.xiaom.ringnews.GlobalContants;
+import com.dark.xiaom.ringnews.domain.NoScrollViewPager;
 import com.dark.xiaom.viewpagerindicator.TabPageIndicator;
 import com.wangjie.shadowviewhelper.ShadowProperty;
-import com.wangjie.shadowviewhelper.ShadowViewDrawable;
 import com.wangjie.shadowviewhelper.ShadowViewHelper;
 
 import java.util.ArrayList;
@@ -92,27 +85,36 @@ public class NewsPager extends BasePager {
         }
     }
 
-
-
-
-
-
     @Override
     public void initData() {
         titleList = new ArrayList<>();
+//        titleList.add("头条");
+//        titleList.add("社会");
+//        titleList.add("国内");
+//        titleList.add("国际");
+//        titleList.add("娱乐");
+//        titleList.add("体育");
+//        titleList.add("军事");
+//        titleList.add("科技");
+//        titleList.add("财经");
+//        titleList.add("时尚");
         titleList.add("头条");
-        titleList.add("社会");
-        titleList.add("国内");
-        titleList.add("国际");
-        titleList.add("娱乐");
-        titleList.add("体育");
-        titleList.add("军事");
-        titleList.add("科技");
+        titleList.add("新闻");
         titleList.add("财经");
-        titleList.add("时尚");
+        titleList.add("体育");
+        titleList.add("娱乐");
+        titleList.add("军事");
+        titleList.add("教育");
+        titleList.add("科技");
+        titleList.add("NBA");
+        titleList.add("股票");
+        titleList.add("星座");
+        titleList.add("女性");
+        titleList.add("健康");
+        titleList.add("育儿");
         mPagerList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            MenuPager tabDetailPager = new MenuPager(mActivity, GlobalContants.type[i]);
+        for (int i = 0; i < 14; i++) {
+            MenuPager tabDetailPager = new MenuPager(mActivity, GlobalContants.jType[i]);
             mPagerList.add(tabDetailPager);
         }
 
