@@ -42,7 +42,7 @@
         android:id="@+id/tv_author_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
+        android:textSize="12sp"
         android:layout_alignBottom="@id/iv_new"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"

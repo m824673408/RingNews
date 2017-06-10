@@ -1,9 +1,10 @@
 package com.dark.xiaom.ringnews.fragments;
 
 import android.app.Activity;
-import android.app.Fragment;
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,8 @@ public abstract class BaseFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         initData();
     }
+
+
 
     public abstract View initView();
 

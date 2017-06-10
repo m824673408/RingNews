@@ -14,9 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dark.xiaom.ringnews.MyApplication;
 import com.dark.xiaom.ringnews.R;
-import com.dark.xiaom.ringnews.activities.DetailActivity;
+import com.dark.xiaom.ringnews.activities.NewsDetailActivity;
 import com.dark.xiaom.ringnews.adapter.MyItemDecoration;
 import com.dark.xiaom.ringnews.utils.CacheSharepreferenceUtil;
 import com.dark.xiaom.ringnews.domain.JiSuJson;
@@ -47,12 +46,14 @@ public class MenuPager extends BasePager implements SwipeRefreshLayout.OnRefresh
     private ImageView imageView;
     private TextView textView;
     private View header;
-    private ImageView headerImageView;
-    private TextView headerTextView;
     private String URLPATH = null;
     private SwipeRefreshLayout swipeRefreshLayout;
     private static int start = 0;
     private static int num = 10;
+    private static String mResult;
+    private JiSuJson jiSuJson;
+    private Gson gson;
+    private final String DETAIL_TYPE = "news";
     public MenuPager(Activity activity, String type) {
         super(activity,type);
     }
@@ -70,8 +71,8 @@ public class MenuPager extends BasePager implements SwipeRefreshLayout.OnRefresh
         linearLayoutManager = new LinearLayoutManager(mActivity);
         recyclerView.setLayoutManager(linearLayoutManager);
         header = LayoutInflater.from(mActivity).inflate(R.layout.layout_headerview, recyclerView, false);
-        headerImageView = (ImageView) header.findViewById(R.id.img_above);
-        headerTextView = (TextView) header.findViewById(R.id.tv_headerview);
+//        headerImageView = (ImageView) header.findViewById(R.id.img_above);
+//        headerTextView = (TextView) header.findViewById(R.id.tv_headerview);
 //        initData();
         return view;
     }
@@ -86,6 +87,7 @@ public class MenuPager extends BasePager implements SwipeRefreshLayout.OnRefresh
         }
         getNewsDetails(type);
         swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
     }
 
     /**
@@ -97,28 +99,18 @@ public class MenuPager extends BasePager implements SwipeRefreshLayout.OnRefresh
 
     private void showRecyclerView(String result){
         Log.d("新数据",result);
-        Gson gson = new Gson();
-        JiSuJson jiSuJson = gson.fromJson(result, JiSuJson.class);
+        gson = new Gson();
+        jiSuJson = gson.fromJson(result, JiSuJson.class);
         final JiSuJson.Result r = jiSuJson.getResult();
-        myAdapter = new MyAdapter();
+        List<JiSuJson.NewContent> myNewsList = r.getData();
+        myAdapter = new MyAdapter(myNewsList);
         int headIndex = 0;
-        for(int i = 0; i < 10; i++){
-            if (r.getData().get(i).pic != "" || r.getData().get(i).pic != null){
-                Log.d("pic","图片为空");
-            }else {
-                r.getData().remove(i);
-                Log.d("第一个非空数据：",i+"");
-                Log.d("我来看看非空数据","这是什么！" + r.getData().get(i).pic);
-                headIndex = i;
-                break;
-            }
-        }
         final String headerUrl = r.getData().get(headIndex).getContent();
         String title = r.getData().get(headIndex).getTitle();
         Log.d("intent", headerUrl);
-        headerTextView.setText(r.getData().get(headIndex).getTitle());
-        x.image().bind(headerImageView,r.getData().remove(headIndex).getPic());
-        myAdapter.addDatas(r.getData());
+//        headerTextView.setText(r.getData().get(headIndex).getTitle());
+//        x.image().bind(headerImageView,r.getData().remove(headIndex).getPic());
+//        myAdapter.addDatas(r.getData());
         myAdapter.setHeaderView(header);
         recyclerView.setAdapter(myAdapter);
         myAdapter.notifyDataSetChanged();
@@ -128,47 +120,43 @@ public class MenuPager extends BasePager implements SwipeRefreshLayout.OnRefresh
     }
 
     private void setScrollLisntener() {
-//        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//                if(myAdapter.isVisBottom(recyclerView)){
-//                    if(num >= 40){
-//                        start = num+1;
-//                        num = 10;
-//                    }else {
-//                        num = num+10;
-//                    }
-//
-//                    swipeRefreshLayout.setRefreshing(true);
-//
-//                }
-//            }
-//        });
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(myAdapter.isVisBottom(recyclerView)){
+                        start = num + start + 1;
+                    Log.d("开始序号",start+ "");
+                    getNewsDetails(type);
+                }
+            }
+        });
     }
 
     private void setHeaderViewListener(final String title, final String headerUrl) {
-        header.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mActivity, DetailActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("content", headerUrl);
-                intent.putExtra("title",title);
-                mActivity.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(mActivity).toBundle());
-            }
-        });
+//        header.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(mActivity, DetailActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                intent.putExtra("content", headerUrl);
+//                intent.putExtra("title",title);
+//                mActivity.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(mActivity).toBundle());
+//            }
+//        });
 
     }
 
     private void setRecyclerItemListener() {
         myAdapter.setOnItemClickListener(new MyAdapter.OnRecyclerViewItemClickListener() {
             @Override
-            public void onItemClick(View view, String data,String title) {
-                Intent intent = new Intent(mActivity, DetailActivity.class);
+            public void onItemClick(View view, String data,String title,String pic) {
+                Intent intent = new Intent(mActivity, NewsDetailActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("detailType",DETAIL_TYPE);
                 intent.putExtra("content", data);
                 intent.putExtra("title",title);
+                intent.putExtra("pic",pic);
                 mActivity.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(mActivity).toBundle());
             }
         });
@@ -189,8 +177,16 @@ public class MenuPager extends BasePager implements SwipeRefreshLayout.OnRefresh
 
             @Override
             public void onSuccess(String result) {
-                Log.d("类型",type);
-                Log.d("数据",result);
+                //判定是否为刷新动作
+                if (start > 0){
+                    mResult = result;
+                    jiSuJson = gson.fromJson(mResult, JiSuJson.class);
+                    JiSuJson.Result r = jiSuJson.getResult();
+                    List<JiSuJson.NewContent> myNewsList = r.getData();
+                    myAdapter.addDatas(myNewsList);
+                    myAdapter.notifyDataSetChanged();
+                    return ;
+                }
                 showRecyclerView(result);
                 CacheSharepreferenceUtil.saveJson(mActivity,URLPATH,result);
             }
@@ -198,6 +194,7 @@ public class MenuPager extends BasePager implements SwipeRefreshLayout.OnRefresh
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 //处理请求异常
+                start = 0;
                 ex.printStackTrace();
 
                 if (ex instanceof HttpException) { // 网络错误

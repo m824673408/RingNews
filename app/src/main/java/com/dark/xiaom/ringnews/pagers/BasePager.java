@@ -11,6 +11,7 @@ public class BasePager {
     public Activity mActivity;
     public View mRootView;
     public String type;
+    public int channelId;
     public BasePager(Activity activity) {
         mActivity = activity;
         mRootView = initView();
@@ -18,6 +19,12 @@ public class BasePager {
 
     public BasePager(Activity activity,String type) {
         this.type = type;
+        mActivity = activity;
+        mRootView = initView();
+    }
+
+    public BasePager(Activity activity,int channelId){
+        this.channelId = channelId;
         mActivity = activity;
         mRootView = initView();
     }

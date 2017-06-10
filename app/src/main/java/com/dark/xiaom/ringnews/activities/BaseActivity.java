@@ -5,16 +5,18 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
+import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
+
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Activity父类
  *
  */
-public class BaseActivity extends FragmentActivity {
+public class BaseActivity extends SlidingFragmentActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 

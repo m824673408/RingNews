@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.dark.xiaom.ringnews.pagers.NewsPager;
+import com.dark.xiaom.ringnews.pagers.UserPager;
 
 /**
  * Created by xiaom on 2017/2/10.
@@ -19,7 +20,6 @@ public class ContentFragment extends BaseFragment {
 
     @Override
     public View initView() {
-
         view  = new NewsPager(activity).initView();
         return view;
     }

@@ -7,17 +7,34 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        >
 
         <TextView
             android:id="@+id/tv_font_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="字号大小"
-            android:textSize="14sp" />
+            android:text="正文字号"
+            android:textSize="16sp" />
+
+        <SeekBar
+            android:id="@+id/sb_setting_textsize"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:progress="20"/>
 
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_clearCache"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="清理缓存"
+        android:textSize="16sp"/>
 
 
 </LinearLayout>

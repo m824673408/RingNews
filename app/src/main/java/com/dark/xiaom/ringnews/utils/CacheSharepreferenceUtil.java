@@ -26,6 +26,8 @@ public class CacheSharepreferenceUtil {
 
     public static final String NAME_PREF = "config";
 
+    public static final String NAME_PRED_LOGIN = "login";
+
     public static void saveJson(Context context, String key,String value) {
         SharedPreferences preferences = context.getSharedPreferences(NAME_PREF,
                 MODE_PRIVATE);
@@ -57,4 +59,39 @@ public class CacheSharepreferenceUtil {
         String json = preferences.getString(key, "");
         return json;
     }
+
+    public static void saveLogin(Context context,Boolean isLogin){
+        SharedPreferences preferences = context.getSharedPreferences(NAME_PRED_LOGIN,MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("login",isLogin);
+        editor.commit();
+    }
+
+    public static Boolean getLogin(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(NAME_PRED_LOGIN,MODE_PRIVATE);
+        Boolean isLogin = sharedPreferences.getBoolean("login",false);
+        return isLogin;
+    }
+
+    public static void saveUsername(Context context,String username){
+        SharedPreferences preferences = context.getSharedPreferences(NAME_PRED_LOGIN,MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("username",username);
+        editor.commit();
+    }
+
+    public static String getUsername(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(NAME_PRED_LOGIN,MODE_PRIVATE);
+        String username = sharedPreferences.getString("username","");
+        return username;
+    }
+
+    public static void clearUsername(Context context){
+        SharedPreferences preferences = context.getSharedPreferences(NAME_PRED_LOGIN,MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.commit();
+    }
+
+
 }

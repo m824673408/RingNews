@@ -7,6 +7,7 @@ package com.dark.xiaom.ringnews;
 public class GlobalContants {
     public static final String[] type = {"top","shehui","guonei","guoji","yule","tiyu","junshi","keji","caijing","shishang"};
     public static final String[] jType = {"头条","新闻","财经","体育","娱乐","军事","教育","科技","NBA","股票","星座","女性","健康","育儿"};
+    public static final String[] WEIXINTYPE = {"热门","推荐","段子", "养生","私房话","八卦","爱生活","财经","汽车","科技","潮人", "辣妈", "点赞党","旅行", "职场", "美食","古今通","学霸族", "星座","体育"};
 //    public static final String GLOBAL_URL_top = "https://v.juhe.cn/toutiao/index?type=" + type[0] + "&key=d5a64087fc098f164e1dadf1b3550597";
 //    public static final String GLOBAL_URL_shehui = "https://v.juhe.cn/toutiao/index?type=" + type[1] + "&key=d5a64087fc098f164e1dadf1b3550597";
 //    public static final String GLOBAL_URL_guonei = "https://v.juhe.cn/toutiao/index?type=" + type[2] + "&key=d5a64087fc098f164e1dadf1b3550597";

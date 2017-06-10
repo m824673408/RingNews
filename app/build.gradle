@@ -41,4 +41,7 @@ dependencies {
     compile 'com.github.rahatarmanahmed:circularprogressview:2.5.0'
     compile 'com.github.wangjiegulu:ShadowViewHelper:1.0.1'
     compile files('libs/commons-codec-1.4.jar')
+    compile project(':SlidingMenulibrary')
+    compile 'com.android.support:palette-v7:25.+'
+    compile files('libs/open_sdk_r5788_lite.jar')
 }

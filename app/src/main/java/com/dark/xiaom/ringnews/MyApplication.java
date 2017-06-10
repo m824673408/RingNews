@@ -13,10 +13,9 @@ import uk.co.chrisjenx.calligraphy.*;
  */
 
 public class MyApplication extends Application {
-
+    public static String APP_id="101406000";
     private static Context context;
     public static Typeface typeFace;
-
     @Override
     public void onCreate() {
         super.onCreate();

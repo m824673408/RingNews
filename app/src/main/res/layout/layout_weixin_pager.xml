@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/lay_line"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.dark.xiaom.viewpagerindicator.TabPageIndicator
+            android:id="@+id/vip_weixin"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:theme="@style/Widget.TabPageIndicator">
+
+
+        </com.dark.xiaom.viewpagerindicator.TabPageIndicator>
+
+        <ImageButton
+            android:id="@+id/img_btn_weixin"
+            android:src="@drawable/ic_arrow_forward_black_24dp"
+            android:background="@null"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+
+    <com.dark.xiaom.ringnews.domain.NoScrollViewPager
+        android:id="@+id/vp_weixin"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.dark.xiaom.ringnews.domain.NoScrollViewPager>
+
+</LinearLayout>

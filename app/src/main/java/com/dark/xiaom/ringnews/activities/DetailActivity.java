@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
 import android.transition.Slide;
@@ -24,7 +25,7 @@ import com.github.rahatarmanahmed.cpv.CircularProgressView;
 /**
  * Created by xiaom on 2017/1/23.
  */
-public class DetailActivity extends BaseActivity {
+public class DetailActivity extends FragmentActivity {
     private static final String APP_CACAHE_DIRNAME = "/webcache";
     private WebView webView;
     private NoAdWebViewClient webViewClient;
@@ -34,7 +35,7 @@ public class DetailActivity extends BaseActivity {
     final String encoding = "utf-8";
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
