@@ -22,6 +22,16 @@ public class Comment {
     public String comment;
     public String time;
     public String newsUrl;
+    public String portrait;
+
+    public String getPortrait() {
+        return portrait;
+    }
+
+    public void setPortrait(String portrait) {
+        this.portrait = portrait;
+    }
+
     public int getCommentid() {
         return commentid;
     }
@@ -55,7 +65,7 @@ public class Comment {
 
     @Override
     public String toString() {
-        return "Comment{" +
+        return "CommentActivity{" +
                 "commentid=" + commentid +
                 ", username='" + username + '\'' +
                 ", comment='" + comment + '\'' +

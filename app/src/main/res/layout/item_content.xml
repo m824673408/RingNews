@@ -4,13 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="3dp"
+    android:elevation="1dp"
+    app:cardCornerRadius="1dp"
    >
 
     <RelativeLayout
         android:id="@+id/cv_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:translationZ="2dp"
     >
 
    <ImageView
@@ -22,6 +24,10 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         />
+
+
+
+
 
     <TextView
         android:id="@+id/tv_type"
@@ -48,11 +54,17 @@
         android:layout_marginRight="10dp"
         />
 
-
-
-
-
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="新闻"
+            android:textSize="10sp"
+            android:textColor="@color/BcolorPrimary"
+            android:background="@drawable/mark_background"
+            android:layout_toRightOf="@id/iv_new"
+            android:layout_alignBottom="@id/iv_new"
+            android:layout_marginLeft="10dp"
+            />
 
     </RelativeLayout>
 

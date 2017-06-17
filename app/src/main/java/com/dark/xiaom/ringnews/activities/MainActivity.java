@@ -2,7 +2,9 @@ package com.dark.xiaom.ringnews.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,6 +18,8 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dark.xiaom.ringnews.R;
 import com.dark.xiaom.ringnews.fragments.ContentFragment;
@@ -26,11 +30,20 @@ import com.dark.xiaom.ringnews.pagers.SettingContentPager;
 import com.dark.xiaom.ringnews.pagers.SignUpPager;
 import com.dark.xiaom.ringnews.pagers.UserPager;
 import com.dark.xiaom.ringnews.pagers.WeiXinPager;
+import com.dark.xiaom.ringnews.utils.CacheSharepreferenceUtil;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
+import org.w3c.dom.Text;
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * Mainactivity各种新闻列表主要陈列
@@ -46,8 +59,11 @@ public class MainActivity extends BaseActivity {
     private FrameLayout frameLayout;
 //    @ViewInject(R.id.imb_menu)
 //    private ImageView imb_menu;
+    private TextView tv_toolbar;
     private static final String FRAGMENT_LEFT_MENU = "fragment_left_menu";
     private static final String FRAGMENT_CONTENT = "fragment_content";
+    private static final int PHOTO_REQUEST_CUT = 3;// 结果
+    private static final int PHOTO_REQUEST_GALLERY = 2;// 从相册中选择
     private SlidingMenu slidingMenu;
 
     @Override
@@ -110,6 +126,110 @@ public class MainActivity extends BaseActivity {
         super.onStart();
     }
 
+    private void crop(Uri uri) {
+        // 裁剪图片意图
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        intent.putExtra("crop", "true");
+        // 裁剪框的比例，1：1
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        // 裁剪后输出图片的尺寸大小
+        intent.putExtra("outputX", 250);
+        intent.putExtra("outputY", 250);
+
+        intent.putExtra("outputFormat", "JPEG");// 图片格式
+        intent.putExtra("noFaceDetection", true);// 取消人脸识别
+        intent.putExtra("return-data", true);
+        // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CUT
+        startActivityForResult(intent, PHOTO_REQUEST_CUT);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PHOTO_REQUEST_GALLERY) {
+            // 从相册返回的数据
+            if (data != null) {
+                // 得到图片的全路径
+                Uri uri = data.getData();
+                crop(uri);
+            }
+        } else if (requestCode == PHOTO_REQUEST_CUT) {
+            // 从剪切图片返回的数据
+            if (data != null) {
+                Bitmap bitmap = data.getParcelableExtra("data");
+                getLeftMenuFragment().setLeftImage(bitmap);
+                upLoadPic(saveFile(bitmap));
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
+
+    private void upLoadPic(String path) {
+        String url = "http://120.25.105.125/mynews/servlet/ChangePortraitServelet";
+        RequestParams params = new RequestParams(url);
+        params.addBodyParameter("username",CacheSharepreferenceUtil.getUsername(this));
+        params.addBodyParameter("file",new File(path));
+        x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                if (result.equals("success")){
+                    Toast.makeText(MainActivity.this, "您的头像更换成功！", Toast.LENGTH_SHORT).show();
+                }else if (result.equals("failure")){
+                    Toast.makeText(MainActivity.this, "更换失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+
+    private String saveFile(Bitmap bitmap) {
+        String picName = CacheSharepreferenceUtil.getUsername(this);
+        File f = new File("mnt/sdcard/Android/data/com.dark.xiaom.ringnews/portrait/", picName + ".png");
+        if (f.exists()) {
+            f.delete();
+        }else {
+            f.getParentFile().mkdirs();
+            try {
+                f.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            FileOutputStream out = new FileOutputStream(f);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+            out.flush();
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
+
+        String picPath = "mnt/sdcard/Android/data/com.dark.xiaom.ringnews/portrait/" + picName + ".png";
+        return picPath;
+
+    }
+
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -138,6 +258,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initView() {
+        tv_toolbar = (TextView) findViewById(R.id.tv_toolbar);
         initNewsPager();
     }
 
@@ -162,27 +283,27 @@ public class MainActivity extends BaseActivity {
     public void setUserPage(){
         UserPager userPager = new UserPager(this);
         frameLayout.removeAllViews();
-        toolbar.setTitle("个人中心");
+        tv_toolbar.setText("个人中心");
         frameLayout.addView(userPager.mRootView);
     }
 
     public void setNewsPage(){
         NewsPager newsPager= new NewsPager(this);
         frameLayout.removeAllViews();
-        toolbar.setTitle("新闻小站");
+        tv_toolbar.setText("新闻小站");
         frameLayout.addView(newsPager.mRootView);
     }
 
     public void setSettingPage(){
         SettingContentPager settingContentPager = new SettingContentPager(this);
-        toolbar.setTitle("设置");
+        tv_toolbar.setText("设置");
         frameLayout.removeAllViews();
         frameLayout.addView(settingContentPager.mRootView);
     }
 
     public void setSignPager(){
         SignUpPager signUpPager = new SignUpPager(this);
-        toolbar.setTitle("注册");
+        tv_toolbar.setText("注册");
         frameLayout.removeAllViews();
         frameLayout.addView(signUpPager.mRootView);
     }
@@ -190,7 +311,7 @@ public class MainActivity extends BaseActivity {
 
     public void setWeiXinPager() {
         WeiXinPager weiXinPager = new WeiXinPager(this);
-        toolbar.setTitle("微信热点");
+        tv_toolbar.setText("微信热点");
         frameLayout.removeAllViews();
         frameLayout.addView(weiXinPager.mRootView);
 

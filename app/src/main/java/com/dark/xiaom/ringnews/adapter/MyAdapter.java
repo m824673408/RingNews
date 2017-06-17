@@ -162,10 +162,15 @@ public class MyAdapter extends RecyclerView.Adapter implements View.OnClickListe
     @Override
     public int getItemViewType(int position) {
         if (mHeaderView == null) return TYPE_NORMAL;
-        if (position == 0) return TYPE_HEADER;
-            if(mDatas.get(position).getPic() == null || mDatas.get(position).getPic() == ""){
+        if (position == 0 && mDatas.get(position).getPic() != null) {
+            return TYPE_HEADER;
+        }else if (position == 0 && mDatas.get(position).getPic() == ""){
+            return TYPE_NO_PIC;
+        }
+
+        if(mDatas.get(position).getPic() == null || mDatas.get(position).getPic() == ""){
                 return TYPE_NO_PIC;
-            }
+        }
         return TYPE_NORMAL;
     }
 

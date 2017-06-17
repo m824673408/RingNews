@@ -15,7 +15,7 @@
 
     <TextView
         android:id="@+id/tv_left_text"
-        android:textColor="#ffffff"
+        android:textColor="@color/BcolorPrimary"
         android:layout_toRightOf="@id/left_image"
         android:textSize="18sp"
         android:layout_centerVertical="true"

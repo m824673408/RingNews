@@ -43,8 +43,8 @@ public class SettingContentPager extends BasePager implements SeekBar.OnSeekBarC
 
             @Override
             public void onClick(View v) {
-                DataCleanManager.cleanApplicationData(mActivity,"/mnt/sdcard/android/data/com.dark.xiaom.ringnews/cache");
-                File file = new File("/mnt/sdcard/android/data/com.dark.xiaom.ringnews/cache");
+                DataCleanManager.cleanApplicationData(mActivity,"/mnt/sdcard/Android/data/com.dark.xiaom.ringnews/cache");
+                File file = new File("/mnt/sdcard/Android/data/com.dark.xiaom.ringnews/cache");
                 try {
                     clearSize = DataCleanManager.getCacheSize(file);
                 } catch (Exception e) {

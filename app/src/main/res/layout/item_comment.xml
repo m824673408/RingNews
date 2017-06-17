@@ -2,7 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorTab">
+    android:background="#ffffff">
+
+    <ImageView
+        android:id="@+id/img_comment_user_por"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp"/>
+
     <TextView
     android:id="@+id/tv_comment_username"
     android:textSize="16sp"
@@ -10,7 +19,9 @@
     android:alpha="87"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_alignParentLeft="true"/>
+    android:layout_margin="10dp"
+    android:layout_toRightOf="@id/img_comment_user_por"
+    android:layout_alignBaseline="@id/img_comment_user_por"/>
 
 
     <TextView
@@ -20,18 +31,19 @@
         android:alpha="87"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:layout_alignParentRight="true"/>
 
     <TextView
         android:id="@+id/tv_comment_body"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textColor="#000000"
+        android:alpha="87"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/tv_comment_username"
         android:layout_centerVertical="true"
+        android:layout_marginTop="10dp"
         android:layout_below="@id/tv_comment_time"/>
-
-
 
 </RelativeLayout>

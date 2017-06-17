@@ -63,9 +63,10 @@ public class MenuPager extends BasePager implements SwipeRefreshLayout.OnRefresh
         View view = View.inflate(mActivity, R.layout.layout_menu_pager, null);
         recyclerView = (RecyclerView) view.findViewById(R.id.rv_newslist);
         recyclerView.setHasFixedSize(true);
-        recyclerView.addItemDecoration(new MyItemDecoration(mActivity,
-                MyItemDecoration.VERTICAL_LIST));
-        recyclerView.addItemDecoration(new MyItemDecoration(mActivity, LinearLayoutManager.VERTICAL));
+        //消除列表分割线
+//        recyclerView.addItemDecoration(new MyItemDecoration(mActivity,
+//                MyItemDecoration.VERTICAL_LIST));
+//        recyclerView.addItemDecoration(new MyItemDecoration(mActivity, LinearLayoutManager.VERTICAL));
         imageView = (ImageView) view.findViewById(R.id.img_above);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.layout_srl);
         linearLayoutManager = new LinearLayoutManager(mActivity);
@@ -87,7 +88,7 @@ public class MenuPager extends BasePager implements SwipeRefreshLayout.OnRefresh
         }
         getNewsDetails(type);
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefreshLayout.setColorSchemeResources(R.color.BcolorPrimary);
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.dark.xiaom.ringnews.fragments;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +34,7 @@ public class LeftFragment extends BaseFragment {
 
     private ListView lvList;
     private ArrayList<String> mMenuList;
+    private ArrayList<Integer> drawableLeftFragment;
     private int mCurrentPos;// 当前被点击的菜单项
     private MenuAdapter mAdapter;
     private ImageView imgPortrait;
@@ -48,10 +50,62 @@ public class LeftFragment extends BaseFragment {
 
     @Override
     public void initData() {
-        String portraitServelet = "http://120.25.105.125/mynews/servlet/PortratiServlelet";
-        portraitUrl = null;
+        drawableLeftFragment = new ArrayList();
         mMenuList = new ArrayList<>();
         mAdapter = new MenuAdapter();
+        drawableLeftFragment.add(R.drawable.ic_action_news_center);
+        drawableLeftFragment.add(R.drawable.ic_action_user);
+        drawableLeftFragment.add(R.drawable.ic_action_weixin);
+        drawableLeftFragment.add(R.drawable.ic_action_setting);
+        mMenuList.add("新闻中心");
+        mMenuList.add("个人中心");
+        mMenuList.add("微信热点");
+        mMenuList.add("设置");
+        lvList.setAdapter(mAdapter);
+        lvList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                mCurrentPos = position;
+                mAdapter.notifyDataSetChanged();
+                switch (position) {
+                    case 0:
+                        ((MainActivity) activity).setNewsPage();
+                        break;
+                    case 1:
+                        if (CacheSharepreferenceUtil.getLogin(activity)) {
+                            ((MainActivity) activity).setUserPage();
+                        } else {
+                            ((MainActivity) activity).setSignPager();
+                        }
+                        break;
+                    case 2:
+                        ((MainActivity) activity).setWeiXinPager();
+                        break;
+                    case 3:
+                        ((MainActivity) activity).setSettingPage();
+                        break;
+                }
+                toggleSlidingMenu();// 隐藏
+            }
+        });
+        getPortrait();
+    }
+
+    private void toggleSlidingMenu() {
+        MainActivity mainUi = (MainActivity) activity;
+        SlidingMenu slidingMenu = mainUi.getSlidingMenu();
+        slidingMenu.toggle();// 切换状态, 显示时隐藏, 隐藏时显示
+    }
+
+    public void setLeftImage(Bitmap bitmap){
+        imgPortrait.setImageBitmap(bitmap);
+    }
+
+    public void getPortrait() {
+        String portraitServelet = "http://120.25.105.125/mynews/servlet/PortratiServlelet";
+        portraitUrl = null;
         final ImageOptions options = new ImageOptions.Builder()
                 //设置加载过程中的图片
                 .setLoadingDrawableId(R.drawable.img_default)
@@ -66,11 +120,12 @@ public class LeftFragment extends BaseFragment {
                 .setImageScaleType(ImageView.ScaleType.FIT_CENTER)
                 .build();
         RequestParams requestParams = new RequestParams(portraitServelet);
-        requestParams.addQueryStringParameter("username",CacheSharepreferenceUtil.getUsername(activity));
+        requestParams.addQueryStringParameter("username", CacheSharepreferenceUtil.getUsername(activity));
         x.http().get(requestParams, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 portraitUrl = "http://120.25.105.125/" + result;
+                System.out.println(portraitUrl + "aaaaaa");
                 x.image().loadDrawable(portraitUrl, options, new Callback.CommonCallback<Drawable>() {
                     @Override
                     public void onSuccess(Drawable result) {
@@ -93,6 +148,7 @@ public class LeftFragment extends BaseFragment {
                     }
                 });
             }
+
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
             }
@@ -105,45 +161,6 @@ public class LeftFragment extends BaseFragment {
             public void onFinished() {
             }
         });
-        mMenuList.add("新闻中心");
-        mMenuList.add("个人中心");
-        mMenuList.add("设置");
-        mMenuList.add("微信热点");
-        lvList.setAdapter(mAdapter);
-        lvList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                mCurrentPos = position;
-                mAdapter.notifyDataSetChanged();
-                switch (position){
-                    case 0:
-                        ((MainActivity)activity).setNewsPage();
-                        break;
-                    case 1:
-                        if(CacheSharepreferenceUtil.getLogin(activity)){
-                            ((MainActivity)activity).setUserPage();
-                        }else{
-                            ((MainActivity)activity).setSignPager();
-                        }
-                        break;
-                    case 2:
-                        ((MainActivity)activity).setSettingPage();
-                        break;
-                    case 3:
-                        ((MainActivity)activity).setWeiXinPager();
-                        break;
-                }
-                toggleSlidingMenu();// 隐藏
-            }
-        });
-    }
-
-    private void toggleSlidingMenu() {
-        MainActivity mainUi = (MainActivity) activity;
-        SlidingMenu slidingMenu = mainUi.getSlidingMenu();
-        slidingMenu.toggle();// 切换状态, 显示时隐藏, 隐藏时显示
     }
 
     class MenuAdapter extends BaseAdapter{
@@ -168,6 +185,8 @@ public class LeftFragment extends BaseFragment {
             View view = View.inflate(activity, R.layout.list_menu_item, null);
             TextView textView = (TextView) view.findViewById(R.id.tv_left_text);
             textView.setText(mMenuList.get(position));
+            ImageView imageView = (ImageView) view.findViewById(R.id.left_image);
+            imageView.setImageResource(drawableLeftFragment.get(position));
             return view;
         }
     }

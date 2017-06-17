@@ -68,7 +68,6 @@ public class WeiXinArticlePager extends BasePager implements SwipeRefreshLayout.
         linearLayoutManager = new LinearLayoutManager(mActivity);
         recyclerView.addItemDecoration(new MyItemDecoration(mActivity, LinearLayoutManager.VERTICAL));
         recyclerView.setLayoutManager(linearLayoutManager);
-
         return view;
     }
 
@@ -77,16 +76,14 @@ public class WeiXinArticlePager extends BasePager implements SwipeRefreshLayout.
         URLPATH = "http://api.jisuapi.com/weixinarticle/get?channelid=" + channelId + "&start=" + start + "&num=" + num + "&appkey=c7e072ef5c43eb98";
         String cacheJson = CacheSharepreferenceUtil.readJson(mActivity,URLPATH);
         if(cacheJson != null){
-            Log.d("cache","cache被使用！");
             showWeinXinRecyclerView(cacheJson);
         }
         getWeiXinDetails(channelId);
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefreshLayout.setColorSchemeResources(R.color.BcolorPrimary);
     }
 
     public void showWeinXinRecyclerView(String result){
-        Log.d("新数据",result);
         gson = new Gson();
         weiXinArticleJson = gson.fromJson(result, WeiXinArticleJson.class);
         final WeiXinArticleJson.WeiXinResult r = weiXinArticleJson.getResult();
@@ -136,7 +133,6 @@ public class WeiXinArticlePager extends BasePager implements SwipeRefreshLayout.
     }
 
     public void getWeiXinDetails(final int channelid) {
-        List<WeiXinArticleJson.WeiXinContent> list;
         URLPATH = "http://api.jisuapi.com/weixinarticle/get?channelid=" + channelId + "&start=" + start + "&num=" + num + "&appkey=c7e072ef5c43eb98";
         final RequestParams params = new RequestParams(URLPATH);
         params.setCacheMaxAge(1000*60);

@@ -3,16 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:imagecontrol="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/colorPrimaryDark" >
+    android:background="@color/colorPrimaryDark">
 
-    <ImageView
-        android:id="@+id/img_users_poratrait"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
-        />
+        <com.dark.xiaom.ringnews.domain.RoundImageView
+            android:id="@+id/img_users_poratrait"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="50dp"
+            imagecontrol:border_outside_color="@color/BcolorPrimary"
+            imagecontrol:border_thickness="2dp"
+            />
+
+
+
+
+
 
     <ListView
         android:id="@+id/lv_list"

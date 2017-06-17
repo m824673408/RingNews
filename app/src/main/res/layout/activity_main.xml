@@ -6,6 +6,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/listBackground"
     tools:context="com.dark.xiaom.ringnews.activities.MainActivity">
 
 <android.support.v7.widget.Toolbar
@@ -14,12 +15,16 @@
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/actionBarSize"
     android:background="@color/colorPrimary"
-    style="@style/ToolbarStyle"
-    app:navigationIcon="@drawable/ic_action_menu"
-    app:title="@string/app_name"
-    app:titleTextColor="#ffffff"
-
+    app:navigationIcon="@drawable/ic_action_menu_green"
+    android:paddingLeft="10dp"
     >
+    android:elevation="4dp"
+    <!--app:title="@string/app_name"-->
+    <!--app:titleTextColor="@color/BcolorPrimary"-->
+    <!--app:titleTextAppearance="@style/ToolbarStyle"-->
+
+
+
 
     <!--<ImageButton-->
         <!--android:id="@+id/imb_menu"-->
@@ -34,17 +39,17 @@
 
 
 
-    <!--<TextView-->
-        <!--android:id="@+id/tv_toolbar"-->
-        <!--android:textSize="24sp"-->
-        <!--android:textColor="@color/cardview_light_background"-->
-        <!--android:layout_gravity="center_horizontal"-->
-        <!--android:singleLine="true"-->
-        <!--android:text="@string/app_title"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
+    <TextView
+        android:id="@+id/tv_toolbar"
+        android:textSize="24sp"
+        android:textColor="@color/BcolorPrimary"
+        android:layout_gravity="center_horizontal"
+        android:singleLine="true"
+        android:text="@string/app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
-        <!--/>-->
+        />
 
 
 

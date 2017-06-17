@@ -7,16 +7,19 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,11 +28,9 @@ import com.dark.xiaom.ringnews.R;
 import com.dark.xiaom.ringnews.domain.Comment;
 import com.dark.xiaom.ringnews.tencent.BaseUiListener;
 import com.dark.xiaom.ringnews.utils.CacheSharepreferenceUtil;
-import com.dark.xiaom.ringnews.utils.DensityUtil;
 import com.dark.xiaom.ringnews.utils.WebSetting;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.tencent.connect.common.Constants;
 import com.tencent.connect.share.QQShare;
 import com.tencent.tauth.Tencent;
 
@@ -50,13 +51,16 @@ public class NewsDetailActivity extends FragmentActivity {
     private ImageButton imgSubComment;
     private String title;
     private String username;
-    private ListView listView;
+//    private ListView listView;
     private List<Comment> commentList;
-    private ImageButton imb_share;
+    private ImageView imb_share;
     private String APP_ID="101406000";
     private Tencent mTencent;
     private Intent intent;
     private ImageOptions options;
+    private String pic;
+    private LinearLayout linearLayout;
+    private Button btn_showComment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +91,7 @@ public class NewsDetailActivity extends FragmentActivity {
 
     private void initData() {
         title = intent.getStringExtra("title");
-        final String pic = intent.getStringExtra("pic");
+        pic = intent.getStringExtra("pic");
         String partionContent = intent.getStringExtra("content");
         username = CacheSharepreferenceUtil.getUsername(NewsDetailActivity.this);
         //设置分享按钮点击事件
@@ -111,57 +115,17 @@ public class NewsDetailActivity extends FragmentActivity {
                 mTencent.shareToQQ(NewsDetailActivity.this, bundle ,new BaseUiListener());
             }
         });
+
+
         WebViewClient webViewClient = new WebViewClient(){
 
         };
-        String url = "http://120.25.105.125/mynews/servlet/SubmitCommentServelet";
-        RequestParams requestParams = new RequestParams(url);
-        try {
-            String newsUrl = new String(title.getBytes(), "UTF-8");
-            requestParams.addQueryStringParameter("newsUrl",newsUrl);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        Log.d("title",title);
-        //获取评论请求
-        Callback.CommonCallback<String> commonCallback = new Callback.CommonCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                Log.d("评论测试",result);
-                if(result.equals("no comment")){
-                    Toast.makeText(NewsDetailActivity.this,"评论出了一些问题……",Toast.LENGTH_LONG).show();
-                }else{
-                    Gson gson = new Gson();
-                    commentList = gson.fromJson(result, new TypeToken<List<Comment>>(){}.getType());
-                    listView.setAdapter(new MyCommentAdapter());
-                    Toast.makeText(NewsDetailActivity.this,"申请评论成功",Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                Toast.makeText(NewsDetailActivity.this,ex.getMessage(),Toast.LENGTH_LONG).show();
-
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-
-            }
-
-            @Override
-            public void onFinished() {
-
-            }
-        };
-        x.http().get(requestParams,commonCallback);
         webView.setWebViewClient(webViewClient);
         WebSettings webSettings = webView.getSettings();
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
         Log.d("正文字号","" + WebSetting.readWebFontSize(this));
         webSettings.setDefaultFontSize(WebSetting.readWebFontSize(this));
-        imageView = (ImageView) findViewById(R.id.img_detail_real);
         StringBuffer stringBuffer = new StringBuffer(partionContent);
         String deviceSetting = "<meta name=\"viewport\" content=\"target-densitydpi=high-dpi, width=device-width\" />";
         partionContent = stringBuffer.toString();
@@ -169,7 +133,7 @@ public class NewsDetailActivity extends FragmentActivity {
         String content = paddingText + "<h2>" + title + "</h2>" + partionContent;
         Log.d("加密后url", content);
         webView.loadDataWithBaseURL(null,content,mimeType,encoding,null);
-        x.image().bind(imageView,pic,options);
+        x.image().bind(imageView, pic,options);
         setClickListener();
     }
 
@@ -201,7 +165,6 @@ public class NewsDetailActivity extends FragmentActivity {
                             @Override
                             public void onError(Throwable ex, boolean isOnCallback) {
                                 Toast.makeText(NewsDetailActivity.this,ex.getMessage(),Toast.LENGTH_LONG).show();
-
                             }
 
                             @Override
@@ -238,14 +201,51 @@ public class NewsDetailActivity extends FragmentActivity {
             }
         });
 
+        btn_showComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(NewsDetailActivity.this, CommentActivity.class);
+                intent.putExtra("title",title);
+                startActivity(intent);
+            }
+        });
+
+        final GestureDetector gestureDetector = new GestureDetector(this,new GestureDetector.SimpleOnGestureListener(){
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                Intent intent = new Intent(NewsDetailActivity.this,ImageDetailActivity.class);
+                int[] location = new int[2];
+                Toast.makeText(NewsDetailActivity.this,"双击",Toast.LENGTH_SHORT).show();
+                imageView.getLocationOnScreen(location);
+                intent.putExtra("image",pic);
+                intent.putExtra("locationX", location[0]);//必须
+                intent.putExtra("locationY", location[1]);//必须
+                intent.putExtra("width", imageView.getWidth());//必须
+                intent.putExtra("height", imageView.getHeight());//必须
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                return super.onDoubleTap(e);
+            }
+        });
+
+        webView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return  gestureDetector.onTouchEvent(event);
+            }
+        });
     }
+
+
 
     private void initUI() {
         webView = (WebView) findViewById(R.id.web_real);
+        imageView = (ImageView) findViewById(R.id.img_detail_real);
         editText = (EditText) findViewById(R.id.et_comment);
         imgSubComment = (ImageButton) findViewById(R.id.imb_comment_submit);
-        listView = (ListView) findViewById(R.id.lv_comment);
-        imb_share = (ImageButton) findViewById(R.id.imb_share);
+        btn_showComment = (Button) findViewById(R.id.btn_show_comment);
+//        listView = (ListView) findViewById(R.id.lv_comment);
+        imb_share = (ImageView) findViewById(R.id.imb_share);
         options = new ImageOptions.Builder()
                 //设置加载过程中的图片
                 .setLoadingDrawableId(R.drawable.img_default)
@@ -260,44 +260,16 @@ public class NewsDetailActivity extends FragmentActivity {
                 .build();
 
     }
+
+
+
 //QQ回调接口
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (null != mTencent)
             mTencent.onActivityResult(requestCode, resultCode, data);
-
     }
 
-    class MyCommentAdapter extends BaseAdapter{
-
-        @Override
-        public int getCount() {
-            return commentList.size() ;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return commentList.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View view = View.inflate(NewsDetailActivity.this, R.layout.item_comment, null);
-            TextView tvUsername = (TextView) view.findViewById(R.id.tv_comment_username);
-            TextView tvCommentTime = (TextView) view.findViewById(R.id.tv_comment_time);
-            TextView tvCommentBody = (TextView) view.findViewById(R.id.tv_comment_body);
-            tvUsername.setText(commentList.get(position).getUsername());
-            tvCommentTime.setText(commentList.get(position).getTime().substring(0,10));
-            tvCommentBody.setText(commentList.get(position).getComment());
-
-            return view;
-        }
-    }
 
 
 }

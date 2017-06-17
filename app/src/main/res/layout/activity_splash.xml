@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_splash"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/BcolorPrimary"
+    tools:context="com.dark.xiaom.ringnews.activities.SplashActivity">
+
+    <TextView
+        android:id="@+id/tv_splash_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:textSize="24sp"
+        android:textColor="#fff"
+        android:layout_margin="10dp"/>
+
+    <ImageView
+        android:id="@+id/img_splash"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@mipmap/ic_launcher"
+        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:text="@string/app_name"
+        android:textSize="50sp"
+        android:textColor="#ffffff"
+        android:layout_below="@id/img_splash"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+<com.romainpiel.shimmer.ShimmerTextView
+    android:id="@+id/stv_splash"
+    android:text="Develop By: MingYaodong"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="14sp"
+    android:textColor="#ffffff"
+    app:reflectionColor="#009688"
+    android:layout_centerHorizontal="true"
+    android:layout_alignParentBottom="true"
+    android:layout_marginBottom="10dp"
+    />
+
+
+
+
+
+
+
+</RelativeLayout>

@@ -12,6 +12,8 @@ import com.dark.xiaom.viewpagerindicator.TabPageIndicator;
 import com.wangjie.shadowviewhelper.ShadowProperty;
 import com.wangjie.shadowviewhelper.ShadowViewHelper;
 
+import org.xutils.x;
+
 import java.util.ArrayList;
 
 /**
@@ -52,11 +54,10 @@ public class WeiXinPager extends BasePager {
     public void initData() {
 
         weixinViewList = new ArrayList<WeiXinArticlePager>();
-        for (int i = 1; i <= 20;i ++ ){
+        for (int i = 1; i <= 5;i ++ ){
             WeiXinArticlePager weiXinArticlePager = new WeiXinArticlePager(mActivity,i);
             weixinViewList.add(weiXinArticlePager);
         }
-
     }
 
     private class MyWeiXinArticleViewPager extends PagerAdapter {
