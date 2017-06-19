@@ -56,7 +56,6 @@ public class UserPager extends BasePager {
     @Override
     public void initData() {
         super.initData();
-        final String[] items = new String[] { "拍照", "从给本地相册选取"};
         btn_exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,7 +67,7 @@ public class UserPager extends BasePager {
         btn_change_por.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                                        choseHeadImageFromGallery();
+                choseHeadImageFromGallery();
             }
         });
 

@@ -24,6 +24,8 @@ import com.dark.xiaom.ringnews.adapter.MyAdapter;
 import com.google.gson.Gson;
 
 
+import net.frakbot.jumpingbeans.JumpingBeans;
+
 import org.xutils.common.Callback;
 import org.xutils.ex.HttpException;
 import org.xutils.http.RequestParams;
@@ -54,6 +56,8 @@ public class MenuPager extends BasePager implements SwipeRefreshLayout.OnRefresh
     private JiSuJson jiSuJson;
     private Gson gson;
     private final String DETAIL_TYPE = "news";
+    private TextView textView1;
+    private JumpingBeans jumpingBeans2;
     public MenuPager(Activity activity, String type) {
         super(activity,type);
     }
@@ -71,6 +75,7 @@ public class MenuPager extends BasePager implements SwipeRefreshLayout.OnRefresh
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.layout_srl);
         linearLayoutManager = new LinearLayoutManager(mActivity);
         recyclerView.setLayoutManager(linearLayoutManager);
+        textView1 = (TextView) view.findViewById(R.id.tv_loading);
         header = LayoutInflater.from(mActivity).inflate(R.layout.layout_headerview, recyclerView, false);
 //        headerImageView = (ImageView) header.findViewById(R.id.img_above);
 //        headerTextView = (TextView) header.findViewById(R.id.tv_headerview);
@@ -89,6 +94,12 @@ public class MenuPager extends BasePager implements SwipeRefreshLayout.OnRefresh
         getNewsDetails(type);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeResources(R.color.BcolorPrimary);
+        jumpingBeans2 = JumpingBeans.with(textView1)
+                .makeTextJump(0, textView1.getText().toString().indexOf('g'))
+                .setIsWave(true)
+                .setLoopDuration(1000)  // ms
+                .build();
+
     }
 
     /**
@@ -128,6 +139,7 @@ public class MenuPager extends BasePager implements SwipeRefreshLayout.OnRefresh
                 if(myAdapter.isVisBottom(recyclerView)){
                         start = num + start + 1;
                     Log.d("开始序号",start+ "");
+                    textView1.setVisibility(View.VISIBLE);
                     getNewsDetails(type);
                 }
             }
@@ -186,6 +198,7 @@ public class MenuPager extends BasePager implements SwipeRefreshLayout.OnRefresh
                     List<JiSuJson.NewContent> myNewsList = r.getData();
                     myAdapter.addDatas(myNewsList);
                     myAdapter.notifyDataSetChanged();
+                    textView1.setVisibility(View.GONE);
                     return ;
                 }
                 showRecyclerView(result);
