@@ -243,6 +243,13 @@ public class MainActivity extends BaseActivity {
                 slidingMenu.toggle();
             }
         });
+
+        slidingMenu.setOnOpenedListener(new SlidingMenu.OnOpenedListener() {
+            @Override
+            public void onOpened() {
+                getLeftMenuFragment().getPortrait();
+            }
+        });
     }
 
     private void initNewsPager(){
@@ -290,7 +297,7 @@ public class MainActivity extends BaseActivity {
     public void setNewsPage(){
         NewsPager newsPager= new NewsPager(this);
         frameLayout.removeAllViews();
-        tv_toolbar.setText("新闻小站");
+        tv_toolbar.setText("新闻中心");
         frameLayout.addView(newsPager.mRootView);
     }
 
