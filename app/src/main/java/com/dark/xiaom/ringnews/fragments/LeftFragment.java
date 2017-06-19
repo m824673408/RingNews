@@ -99,6 +99,8 @@ public class LeftFragment extends BaseFragment {
         slidingMenu.toggle();// 切换状态, 显示时隐藏, 隐藏时显示
     }
 
+
+
     public void setLeftImage(Bitmap bitmap){
         imgPortrait.setImageBitmap(bitmap);
     }
@@ -112,7 +114,7 @@ public class LeftFragment extends BaseFragment {
                 //设置加载失败后的图片
 //            .setFailureDrawableId(R.drawable.ic_launcher)
                 //设置使用缓存
-                .setUseMemCache(true)
+                .setUseMemCache(false)
                 //设置显示圆形图片
                 .setCircular(true)
                 //设置支持gif
