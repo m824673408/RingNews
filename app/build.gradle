@@ -10,6 +10,20 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        applicationId "com.dark.xiaom.ringnews" //JPush上注册的包名.
+
+
+        ndk {
+            //选择要添加的对应cpu类型的.so库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a','x86', 'x86_64', 'mips', 'mips64'
+            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+        }
+
+        manifestPlaceholders = [
+                JPUSH_PKGNAME : applicationId,
+                JPUSH_APPKEY : "bd11ddbed6e64a90d76a7817", //JPush上注册的包名对应的appkey.
+                JPUSH_CHANNEL : "新闻统计", //用户渠道统计的渠道名称
+        ]
     }
     buildTypes {
         release {
@@ -46,4 +60,5 @@ dependencies {
     compile files('libs/open_sdk_r5788_lite.jar')
     compile 'com.romainpiel.shimmer:library:1.4.0@aar'
     compile 'net.frakbot:jumpingbeans:1.3.0'
+    compile 'cn.jiguang.sdk:jpush:3.0.5'
 }

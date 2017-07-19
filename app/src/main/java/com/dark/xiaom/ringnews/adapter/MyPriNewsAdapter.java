@@ -3,14 +3,14 @@ package com.dark.xiaom.ringnews.adapter;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.PixelCopy;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dark.xiaom.ringnews.R;
-import com.dark.xiaom.ringnews.domain.JiSuJson;
-import com.dark.xiaom.ringnews.domain.WeiXinArticleJson;
+import com.dark.xiaom.ringnews.domain.PriNews;
 
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
@@ -19,28 +19,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Administrator on 2017/1/2.
+ * Created by xiaom on 2017/6/22.
  */
-public class MyWeiXinAdapter extends RecyclerView.Adapter implements View.OnClickListener {
 
+public class MyPriNewsAdapter extends RecyclerView.Adapter implements View.OnClickListener{
     public static final int TYPE_HEADER = 0;
     public static final int TYPE_NORMAL = 1;
     public static final int TYPE_NO_PIC = 2;
 
-    private List<WeiXinArticleJson.WeiXinContent> mDatas = new ArrayList<>();
-//    private View mHeaderView;
+    private List<PriNews> mDatas = new ArrayList<>();
+    private View mHeaderView;
     private View noPicView;
-    private OnRecyclerViewItemClickListener mOnItemClickListener = null;
+    private MyAdapter.OnRecyclerViewItemClickListener mOnItemClickListener = null;
 
-    List<JiSuJson.NewContent> data;
+    List<PriNews> data;
 
 
-
-    public MyWeiXinAdapter() {
+    public MyPriNewsAdapter() {
 
     }
 
-    public MyWeiXinAdapter(List<WeiXinArticleJson.WeiXinContent> data) {
+    public MyPriNewsAdapter(List<PriNews> data) {
         mDatas = data;
 
     }
@@ -61,12 +60,12 @@ public class MyWeiXinAdapter extends RecyclerView.Adapter implements View.OnClic
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-//        if (mHeaderView != null && viewType == TYPE_HEADER) {
-//
-//            mHeaderView.setOnClickListener(this);
-//
-//            return new ViewHolder(mHeaderView);
-//        }
+        if (mHeaderView != null && viewType == TYPE_HEADER) {
+
+            mHeaderView.setOnClickListener(this);
+
+            return new MyPriNewsAdapter.ViewHolder(mHeaderView);
+        }
 
 
         if (viewType == TYPE_NO_PIC) {
@@ -75,14 +74,19 @@ public class MyWeiXinAdapter extends RecyclerView.Adapter implements View.OnClic
 
             noPicView.setOnClickListener(this);
 
-            return new ViewHolder(noPicView);
+            return new MyPriNewsAdapter.ViewHolder(noPicView);
 
         }
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item_weixinarticle, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_content, parent, false);
 
         view.setOnClickListener(this);
-        return new ViewHolder(view);
+
+
+
+
+
+        return new MyPriNewsAdapter.ViewHolder(view);
 
     }
 
@@ -92,32 +96,29 @@ public class MyWeiXinAdapter extends RecyclerView.Adapter implements View.OnClic
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 //        final int pos = getRealPosition(holder);
 
-        final WeiXinArticleJson.WeiXinContent data = mDatas.get(position);
+        final PriNews data = mDatas.get(position);
         String date = data.getTime().substring(data.getTime().indexOf("-") + 1,data.getTime().length());
-//        if (getItemViewType(position) == TYPE_HEADER){
-//            ((ViewHolder) holder).text.setText(data.getTitle());
-//            x.image().bind(((ViewHolder) holder).imageView, data.getPic(), options);
-//        }else
-        if(getItemViewType(position) == TYPE_NORMAL){
+        if (getItemViewType(position) == TYPE_HEADER){
+            ((MyPriNewsAdapter.ViewHolder) holder).text.setText(data.getTitle());
+            x.image().bind(((MyPriNewsAdapter.ViewHolder) holder).imageView, data.getPic(), options);
+        }else if(getItemViewType(position) == TYPE_NORMAL){
             if(date == ""){
                 date =data.getTime().substring(data.getTime().indexOf(".") + 1,data.getTime().length());
             }
-            if (date == "" || data.getWeixinname() == ""){
-                ((ViewHolder) holder).authorNameText.setText("待认领的火星文章");
+            if (date == "" || data.getAuthor() == ""){
+                ((MyPriNewsAdapter.ViewHolder) holder).authorNameText.setText("待认领的火星新闻");
             }else{
-                ((ViewHolder) holder).authorNameText.setText(data.getWeixinname() + " | " + date);
+                ((MyPriNewsAdapter.ViewHolder) holder).authorNameText.setText(data.getAuthor() + " | " + date);
             }
 
-            ((ViewHolder) holder).text.setText(data.getTitle());
-            x.image().bind(((ViewHolder) holder).imageView, data.getPic(), options);
+            ((MyPriNewsAdapter.ViewHolder) holder).text.setText(data.getTitle());
+            System.out.println(data.getPic());
+            x.image().bind(((MyPriNewsAdapter.ViewHolder) holder).imageView, data.getPic(), options);
             //将数据保存在itemView的Tag中，以便点击时进行获取
-//            System.out.println(data.getTime());
-//            ((ViewHolder) holder).tv_agree.setText(data.getLikenum());
-//            ((ViewHolder) holder).tv_read.setText(data.getReadnum());
 
         }else if (getItemViewType(position) == TYPE_NO_PIC){
-            ((ViewHolder)holder).text.setText(data.getTitle());
-            ((ViewHolder)holder).authorNameText.setText(data.getWeixinname() + " | " + date);
+            ((MyPriNewsAdapter.ViewHolder)holder).text.setText(data.getTitle());
+            ((MyPriNewsAdapter.ViewHolder)holder).authorNameText.setText(data.getAuthor() + " | " + date);
 
         }
         holder.itemView.setTag(data);
@@ -125,17 +126,15 @@ public class MyWeiXinAdapter extends RecyclerView.Adapter implements View.OnClic
 
     public int getRealPosition(RecyclerView.ViewHolder holder) {
         int position = holder.getLayoutPosition();
-//        return mHeaderView == null ? position : position - 1;
-        return 0;
+        return mHeaderView == null ? position : position - 1;
     }
 
 
 
     @Override
     public int getItemCount() {
-//        return mHeaderView == null ? mDatas.size() : mDatas.size() + 1;
-//        return mHeaderView == null ? mDatas.size() : mDatas.size();
-        return mDatas.size();
+
+        return mHeaderView == null ? mDatas.size() : mDatas.size();
     }
 
 
@@ -144,67 +143,66 @@ public class MyWeiXinAdapter extends RecyclerView.Adapter implements View.OnClic
     public void onClick(View view) {
         if (mOnItemClickListener != null) {
             //注意这里使用getTag方法获取数据
-            mOnItemClickListener.onItemClick(view, ((WeiXinArticleJson.WeiXinContent) view.getTag()).getUrl());
+            mOnItemClickListener.onItemClick(view, ((PriNews) view.getTag()).getContent(),((PriNews) view.getTag()).getTitle(),((PriNews) view.getTag()).getPic());
         }
     }
 
     public void setHeaderView(View headerView) {
-//        mHeaderView = headerView;
-//        notifyItemInserted(0);
+        mHeaderView = headerView;
+        notifyItemInserted(0);
     }
 
-//    public View getHeaderView() {
-//        return mHeaderView;
-//    }
+    public View getHeaderView() {
+        return mHeaderView;
+    }
 
-    public void addDatas(List<WeiXinArticleJson.WeiXinContent> datas) {
+    public void addDatas(List<PriNews> datas) {
         mDatas.addAll(datas);
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemViewType(int position) {
-//        if (mHeaderView == null) return TYPE_NORMAL;
-//        if (position == 0) return TYPE_HEADER;
-//            if(mDatas.get(position).getPic() == null || mDatas.get(position).getPic() == ""){
-//                return TYPE_NO_PIC;
-//            }
+        if (mHeaderView == null) return TYPE_NORMAL;
+        if (position == 0 && mDatas.get(position).getPic() != null) {
+            return TYPE_HEADER;
+        }else if (position == 0 && mDatas.get(position).getPic() == ""){
+            return TYPE_NO_PIC;
+        }
+
+        if(mDatas.get(position).getPic() == null || mDatas.get(position).getPic() == ""){
+            return TYPE_NO_PIC;
+        }
         return TYPE_NORMAL;
     }
 
-    public void setOnItemClickListener(OnRecyclerViewItemClickListener listener) {
+    public void setOnItemClickListener(MyAdapter.OnRecyclerViewItemClickListener listener) {
         this.mOnItemClickListener = listener;
     }
 
     public static interface OnRecyclerViewItemClickListener {
-        void onItemClick(View view, String url);
+        void onItemClick(View view, String content,String title,String pic);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tv_agree;
-        TextView tv_read;
         TextView text;
         ImageView imageView;
         TextView authorNameText;
-
         public ViewHolder(View itemView) {
             // super这个参数一定要注意,必须为Item的根节点.否则会出现莫名的FC.
             super(itemView);
-//            if(itemView == mHeaderView) {
-//                text = (TextView) itemView.findViewById(R.id.tv_headerview);
-//                imageView = (ImageView) itemView.findViewById(R.id.img_above);
-//                return;
-//            }else
-//            if(itemView == noPicView){
-//                text = (TextView) itemView.findViewById(R.id.tv_no_pic);
-//                authorNameText = (TextView) itemView.findViewById(R.id.tv_no_pic_author_name);
-//                return;
-//            }
-            authorNameText = (TextView) itemView.findViewById(R.id.tv_weixin_author_name);
-            text = (TextView) itemView.findViewById(R.id.tv_weixin_type);
-            imageView = (ImageView) itemView.findViewById(R.id.iv_weixin_aticle);
-//            tv_agree = (TextView) itemView.findViewById(R.id.tv_agree_num);
-//            tv_read = (TextView) itemView.findViewById(R.id.tv_read_num);
+            if(itemView == mHeaderView) {
+                text = (TextView) itemView.findViewById(R.id.tv_headerview);
+                imageView = (ImageView) itemView.findViewById(R.id.img_above);
+                return;
+            }else if(itemView == noPicView){
+                text = (TextView) itemView.findViewById(R.id.tv_no_pic);
+                authorNameText = (TextView) itemView.findViewById(R.id.tv_no_pic_author_name);
+                return;
+            }
+            authorNameText = (TextView) itemView.findViewById(R.id.tv_author_name);
+            text = (TextView) itemView.findViewById(R.id.tv_type);
+            imageView = (ImageView) itemView.findViewById(R.id.iv_new);
         }
     }
 
@@ -225,4 +223,3 @@ public class MyWeiXinAdapter extends RecyclerView.Adapter implements View.OnClic
         }
     }
 }
-

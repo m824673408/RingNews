@@ -26,7 +26,7 @@ public class NewsPager extends BasePager {
     private final int REFRESH_UI = 0;
     private TabPageIndicator tabPageIndicator;
     private NoScrollViewPager noScrollViewPager;
-    private List<MenuPager> mPagerList;
+    private List<BasePager> mPagerList;
     private ImageButton imageButton;
 
     public NewsPager(Activity activity) {
@@ -73,7 +73,7 @@ public class NewsPager extends BasePager {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            MenuPager tabDetailPager = mPagerList.get(position);
+            BasePager tabDetailPager = mPagerList.get(position);
             tabDetailPager.initData();
             container.addView(tabDetailPager.mRootView);
             return tabDetailPager.mRootView;
@@ -112,11 +112,15 @@ public class NewsPager extends BasePager {
         titleList.add("女性");
         titleList.add("健康");
         titleList.add("育儿");
+        titleList.add("本地新闻");
         mPagerList = new ArrayList<>();
         for (int i = 0; i < 14; i++) {
             MenuPager tabDetailPager = new MenuPager(mActivity, GlobalContants.jType[i]);
             mPagerList.add(tabDetailPager);
         }
+        LocalPager localPager = new LocalPager(mActivity);
+        mPagerList.add(localPager);
+
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
